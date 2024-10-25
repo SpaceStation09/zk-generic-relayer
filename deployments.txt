@@ -1,0 +1,7 @@
+Init Owne: 0x94871d770973D93d6c8912E3D1950F3DAD9B4E30
+ECDSAOwnedDKIMRegistry implementation deployed at: 0x99078A4D2a0478639F29DFf19E56878DeFdf1F7E
+ECDSAOwnedDKIMRegistry (proxy) deployed at: 0x92DF790D6404eEb3B849E1d37e1a8795e5Aa1E19
+verifier implementation contract deployed at: 0x2Ce260Ee3a2512A633615Bb636d524D8c9c90dEe
+Verifier (proxy) deployed at: 0x6989677d394D0d1e69EEDDC89BD2DeD249E15053
+EmailAuth implementation deployed at: 0x6fFebaA90239062Ca5230a3be584B096a413cc99
+EmitEmailCommand deployed at: 0x02EE51974Db3BB1EAdCAd355934b5A5A93747478

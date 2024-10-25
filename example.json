@@ -1,0 +1,110 @@
+{
+  "contractAddress": "0x02EE51974Db3BB1EAdCAd355934b5A5A93747478",
+  "dkimContractAddress": "0x92DF790D6404eEb3B849E1d37e1a8795e5Aa1E19",
+  "accountCode": "0x22a2d51a892f866cf3c6cc4e138ba87a8a5059a1d80dea5b8ee8232034a105b7",
+  "codeExistsInEmail": true,
+  "functionAbi": {
+    "type": "function",
+    "name": "emitEmailCommand",
+    "inputs": [
+      {
+        "name": "emailAuthMsg",
+        "type": "tuple",
+        "internalType": "struct EmailAuthMsg",
+        "components": [
+          {
+            "name": "templateId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "commandParams",
+            "type": "bytes[]",
+            "internalType": "bytes[]"
+          },
+          {
+            "name": "skippedCommandPrefix",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "proof",
+            "type": "tuple",
+            "internalType": "struct EmailProof",
+            "components": [
+              {
+                "name": "domainName",
+                "type": "string",
+                "internalType": "string"
+              },
+              {
+                "name": "publicKeyHash",
+                "type": "bytes32",
+                "internalType": "bytes32"
+              },
+              {
+                "name": "timestamp",
+                "type": "uint256",
+                "internalType": "uint256"
+              },
+              {
+                "name": "maskedCommand",
+                "type": "string",
+                "internalType": "string"
+              },
+              {
+                "name": "emailNullifier",
+                "type": "bytes32",
+                "internalType": "bytes32"
+              },
+              {
+                "name": "accountSalt",
+                "type": "bytes32",
+                "internalType": "bytes32"
+              },
+              {
+                "name": "isCodeExist",
+                "type": "bool",
+                "internalType": "bool"
+              },
+              {
+                "name": "proof",
+                "type": "bytes",
+                "internalType": "bytes"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "owner",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "templateIdx",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  "commandTemplate": "Emit string {string}",
+  "commandParams": [
+    "Testing"
+  ],
+  "templateId": "0x25d6c3eada7b2926c822bbfebfc3173123afb205cf093a8cae6622a56712f8a",
+  "remainingArgs": [
+    {
+      "Address": "0x94871d770973D93d6c8912E3D1950F3DAD9B4E30"
+    },
+    {
+      "Uint": "0"
+    }
+  ],
+  "emailAddress": "emailAddress",
+  "subject": "Testing 1",
+  "body": "Testing 2",
+  "chain": "sepolia"
+}
