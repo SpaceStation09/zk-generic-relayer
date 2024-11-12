@@ -1,100 +1,103 @@
 {
-  "contractAddress": "0x02EE51974Db3BB1EAdCAd355934b5A5A93747478",
-  "dkimContractAddress": "0x92DF790D6404eEb3B849E1d37e1a8795e5Aa1E19",
   "accountCode": "0x22a2d51a892f866cf3c6cc4e138ba87a8a5059a1d80dea5b8ee8232034a105b7",
+  "body": "Testing Wallet Bind Passkey",
+  "chain": "base sepolia",
   "codeExistsInEmail": true,
+  "commandParams": [
+    "0xaa3067e5e558f595b522eda47a4528f987ba4487ddb110b26fdb426e9b36eb56",
+    "0x0ad8b9eb183479970810e841806fe70142b503d2b7784feb690ac5dfc05ccb32"
+  ],
+  "commandTemplate": "Bind Pubkey {uint} {uint}",
+  "contractAddress": "0x7d695ED50F06C73197338A26d978249722c36603",
+  "dkimContractAddress": "0x75dFD032289748b206fbB2Af30dB8775ad4DAd8E",
+  "emailAddress": "emailAddress",
   "functionAbi": {
-    "type": "function",
-    "name": "emitEmailCommand",
     "inputs": [
       {
-        "name": "emailAuthMsg",
-        "type": "tuple",
-        "internalType": "struct EmailAuthMsg",
         "components": [
           {
+            "internalType": "uint256",
             "name": "templateId",
-            "type": "uint256",
-            "internalType": "uint256"
+            "type": "uint256"
           },
           {
+            "internalType": "bytes[]",
             "name": "commandParams",
-            "type": "bytes[]",
-            "internalType": "bytes[]"
+            "type": "bytes[]"
           },
           {
+            "internalType": "uint256",
             "name": "skippedCommandPrefix",
-            "type": "uint256",
-            "internalType": "uint256"
+            "type": "uint256"
           },
           {
-            "name": "proof",
-            "type": "tuple",
-            "internalType": "struct EmailProof",
             "components": [
               {
+                "internalType": "string",
                 "name": "domainName",
-                "type": "string",
-                "internalType": "string"
+                "type": "string"
               },
               {
+                "internalType": "bytes32",
                 "name": "publicKeyHash",
-                "type": "bytes32",
-                "internalType": "bytes32"
+                "type": "bytes32"
               },
               {
+                "internalType": "uint256",
                 "name": "timestamp",
-                "type": "uint256",
-                "internalType": "uint256"
+                "type": "uint256"
               },
               {
+                "internalType": "string",
                 "name": "maskedCommand",
-                "type": "string",
-                "internalType": "string"
+                "type": "string"
               },
               {
+                "internalType": "bytes32",
                 "name": "emailNullifier",
-                "type": "bytes32",
-                "internalType": "bytes32"
+                "type": "bytes32"
               },
               {
+                "internalType": "bytes32",
                 "name": "accountSalt",
-                "type": "bytes32",
-                "internalType": "bytes32"
+                "type": "bytes32"
               },
               {
+                "internalType": "bool",
                 "name": "isCodeExist",
-                "type": "bool",
-                "internalType": "bool"
+                "type": "bool"
               },
               {
+                "internalType": "bytes",
                 "name": "proof",
-                "type": "bytes",
-                "internalType": "bytes"
+                "type": "bytes"
               }
-            ]
+            ],
+            "internalType": "struct EmailProof",
+            "name": "proof",
+            "type": "tuple"
           }
-        ]
+        ],
+        "internalType": "struct EmailAuthMsg",
+        "name": "emailAuthMsg",
+        "type": "tuple"
       },
       {
+        "internalType": "address",
         "name": "owner",
-        "type": "address",
-        "internalType": "address"
+        "type": "address"
       },
       {
+        "internalType": "uint256",
         "name": "templateIdx",
-        "type": "uint256",
-        "internalType": "uint256"
+        "type": "uint256"
       }
     ],
+    "name": "BindPasskey",
     "outputs": [],
-    "stateMutability": "nonpayable"
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
-  "commandTemplate": "Emit string {string}",
-  "commandParams": [
-    "Testing"
-  ],
-  "templateId": "0x25d6c3eada7b2926c822bbfebfc3173123afb205cf093a8cae6622a56712f8a",
   "remainingArgs": [
     {
       "Address": "0x94871d770973D93d6c8912E3D1950F3DAD9B4E30"
@@ -103,8 +106,6 @@
       "Uint": "0"
     }
   ],
-  "emailAddress": "emailAddress",
-  "subject": "Testing 1",
-  "body": "Testing 2",
-  "chain": "sepolia"
+  "subject": "Testing Wallet",
+  "templateId": "0x25d6c3eada7b2926c822bbfebfc3173123afb205cf093a8cae6622a56712f8a"
 }
