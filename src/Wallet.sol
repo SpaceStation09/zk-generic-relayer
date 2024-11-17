@@ -182,24 +182,23 @@ contract Wallet {
         bytes memory challenge,
         bytes memory authenticatorData,
         string memory clientDataJSON,
-        uint challengeLocation,
-        uint responseTypeLocation,
-        uint r,
-        uint s
+        uint256 challengeLocation,
+        uint256 responseTypeLocation,
+        uint256 r,
+        uint256 s
     ) public view returns (bool) {
-        return
-            WebAuthn.verifySignature({
-                challenge: challenge,
-                authenticatorData: authenticatorData,
-                requireUserVerification: false,
-                clientDataJSON: clientDataJSON,
-                challengeLocation: challengeLocation,
-                responseTypeLocation: responseTypeLocation,
-                r: r,
-                s: s,
-                x: passkeyPub[0],
-                y: passkeyPub[1]
-            });
+        return WebAuthn.verifySignature({
+            challenge: challenge,
+            authenticatorData: authenticatorData,
+            requireUserVerification: false,
+            clientDataJSON: clientDataJSON,
+            challengeLocation: challengeLocation,
+            responseTypeLocation: responseTypeLocation,
+            r: r,
+            s: s,
+            x: passkeyPub[0],
+            y: passkeyPub[1]
+        });
     }
 
     function _bindPasskey(

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
-import "./Base64URL.sol";
+import "./Bytes.sol";
 import "./P256.sol";
 
 /**
@@ -148,10 +148,14 @@ library WebAuthn {
         }
 
         // Check that challenge is in the clientDataJSON
-        string memory challengeB64url = Base64URL.encode(challenge);
+        // string memory challengeB64url = Base64URL.encode(challenge);
+        
+
+        //FIXME: check why base64url not work
+        string memory challengeStr = BytesToString.bytesToString(challenge);
         string memory challengeProperty = string.concat(
             '"challenge":"',
-            challengeB64url,
+            challengeStr,
             '"'
         );
 
@@ -165,6 +169,7 @@ library WebAuthn {
             abi.encodePacked(authenticatorData, clientDataJSONHash)
         );
 
-        return P256.verifySignature(messageHash, r, s, x, y);
+        //FIXME: Check if allowMalleability is necessary
+        return P256.verifySignatureAllowMalleability(messageHash, r, s, x, y);
     }
 }
