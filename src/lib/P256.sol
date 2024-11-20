@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.22;
-
+pragma solidity ^0.8.21;
 /**
  * Helper library for external contracts to verify P256 signatures.
  **/
 library P256 {
-    // address constant VERIFIER = address(0x100);
-    address constant VERIFIER = 0xaca81583840B1bf2dDF6CDe824ada250C1936B4D;
+    // We use our own copy of the P256Verifier contract, to be able to use it on Sepolia
+    address constant VERIFIER = 0x7a29Dc72fa3938705d91A9659455BC54731eD70F;
 
     function verifySignatureAllowMalleability(
         bytes32 message_hash,

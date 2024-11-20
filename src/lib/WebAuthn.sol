@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.21;
 
-import "./Bytes.sol";
-import "./P256.sol";
+import {P256} from "./P256.sol";
+import "./Base64URL.sol";
 
 /**
  * Helper library for external contracts to verify WebAuthn signatures.
@@ -40,7 +40,7 @@ library WebAuthn {
 
     /// Verifies the authFlags in authenticatorData. Numbers in inline comment
     /// correspond to the same numbered bullets in
-    /// https://www.w3.org/TR/webauthn-2/#sctn-verifying-assertion.
+    /// https://w3c.github.io/webauthn/#sctn-verifying-assertion.
     function checkAuthFlags(
         bytes1 flags,
         bool requireUserVerification
@@ -73,7 +73,7 @@ library WebAuthn {
 
     /**
      * Verifies a Webauthn P256 signature (Authentication Assertion) as described
-     * in https://www.w3.org/TR/webauthn-2/#sctn-verifying-assertion. We do not
+     * in https://w3c.github.io/webauthn/#sctn-verifying-assertion. We do not
      * verify all the steps as described in the specification, only ones relevant
      * to our context. Please carefully read through this list before usage.
      * Specifically, we do verify the following:
@@ -135,7 +135,7 @@ library WebAuthn {
     ) internal view returns (bool) {
         // Check that authenticatorData has good flags
         if (
-            authenticatorData.length < 37 ||
+            authenticatorData.length < 32 ||
             !checkAuthFlags(authenticatorData[32], requireUserVerification)
         ) {
             return false;
@@ -148,14 +148,10 @@ library WebAuthn {
         }
 
         // Check that challenge is in the clientDataJSON
-        // string memory challengeB64url = Base64URL.encode(challenge);
-        
-
-        //FIXME: check why base64url not work
-        string memory challengeStr = BytesToString.bytesToString(challenge);
+        string memory challengeB64url = Base64URL.encode(challenge);
         string memory challengeProperty = string.concat(
             '"challenge":"',
-            challengeStr,
+            challengeB64url,
             '"'
         );
 
@@ -169,7 +165,7 @@ library WebAuthn {
             abi.encodePacked(authenticatorData, clientDataJSONHash)
         );
 
-        //FIXME: Check if allowMalleability is necessary
+        // check that the signature is valid while allowing malleability
         return P256.verifySignatureAllowMalleability(messageHash, r, s, x, y);
     }
 }
