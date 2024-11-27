@@ -6,6 +6,7 @@ import "@zk-email/ether-email-auth-contracts/src/EmailAuth.sol";
 import "@openzeppelin/contracts/utils/Create2.sol";
 import {ERC1967Proxy} from "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "./lib/WebAuthn.sol";
+import "./lib/structs.sol";
 
 contract Wallet {
     address public verifierAddr;
@@ -108,7 +109,7 @@ contract Wallet {
      * @return string[][] A two-dimensional array of strings,
      *    where each inner array represents a set of fixed strings and matchers for a command template.
      * templates struct is a two-dimensional array of strings:
-     *    each row represents an acceptable command, each element in this row combined together to represent the comman format
+     *    each row represents an acceptable command, each element in this row combined together to represent the common format
      */
     function commandTemplates() public pure returns (string[][] memory) {
         string[][] memory templates = new string[][](1);
@@ -178,27 +179,46 @@ contract Wallet {
         passkeyPub = _passkey;
     }
 
-    function checkPasskeySig(
-        bytes memory challenge,
-        bytes memory authenticatorData,
-        string memory clientDataJSON,
-        uint256 challengeLocation,
-        uint256 responseTypeLocation,
-        uint256 r,
-        uint256 s
-    ) public view returns (bool) {
-        return WebAuthn.verifySignature({
-            challenge: challenge,
-            authenticatorData: authenticatorData,
-            requireUserVerification: false,
-            clientDataJSON: clientDataJSON,
-            challengeLocation: challengeLocation,
-            responseTypeLocation: responseTypeLocation,
-            r: r,
-            s: s,
-            x: passkeyPub[0],
-            y: passkeyPub[1]
-        });
+    function executeCall(
+        Call calldata call,
+        bytes calldata signature
+    ) public returns (bool) {
+        Signature memory sig = abi.decode(signature, (Signature));
+        bytes memory message = abi.encodePacked(
+            call.dest,
+            call.value,
+            call.data
+        );
+        require(_checkSignature(message, sig), "invalid signature");
+        _execute(call.dest, call.value, call.data);
+    }
+
+    function _checkSignature(
+        bytes memory message,
+        Signature memory sig
+    ) internal view returns (bool) {
+        return
+            WebAuthn.verifySignature({
+                challenge: message,
+                authenticatorData: sig.authenticatorData,
+                requireUserVerification: true,
+                clientDataJSON: sig.clientDataJSON,
+                challengeLocation: sig.challengeLocation,
+                responseTypeLocation: sig.responseTypeLocation,
+                r: sig.r,
+                s: sig.s,
+                x: passkeyPub[0],
+                y: passkeyPub[1]
+            });
+    }
+
+    function _execute(address dest, uint value, bytes memory data) internal {
+        (bool success, bytes memory result) = dest.call{value: value}(data);
+        if (!success) {
+            assembly {
+                revert(add(result, 32), mload(result))
+            }
+        }
     }
 
     function _bindPasskey(

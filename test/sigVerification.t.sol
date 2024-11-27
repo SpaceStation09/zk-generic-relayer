@@ -2,12 +2,17 @@
 pragma solidity ^0.8.21;
 
 import {Test} from "forge-std/Test.sol";
+import {StdCheats} from "forge-std/StdCheats.sol";
 import "../src/SignatureVerifier.sol";
 import "../src/lib/P256.sol";
-import "../src/lib/P256Verifier.sol";
+import "../src/test/P256Verifier.sol";
+import "../src/test/TestToken.sol";
+import "../src/Wallet.sol";
 
 contract sigVerifyTest is Test {
     SignatureVerifier verifier;
+    TestToken token;
+    Wallet wallet;
     uint[2] pubkey;
 
     function setUp() public {
@@ -20,6 +25,11 @@ contract sigVerifyTest is Test {
         pubkey = [x, y];
         vm.etch(P256.VERIFIER, type(P256Verifier).runtimeCode);
         verifier = new SignatureVerifier(pubkey);
+        //dummy wallet
+        wallet = new Wallet(vm.addr(1), vm.addr(2), vm.addr(3));
+        address tokenAddr = 0x7E5703DdAae595C2f2Cc8c46Da49F2966095ac23;
+        StdCheats.deployCodeTo("TestToken.sol", tokenAddr);
+        token = TestToken(tokenAddr);
     }
 
     function testVerifier() public {
@@ -32,8 +42,9 @@ contract sigVerifyTest is Test {
         assertEq(ret, true);
     }
 
+    // signature generated via the test-oriented front-end: https://github.com/SpaceStation09/passkey-sign
     function testVerifyCall() public {
-        address dest = 0x7E5703DdAae595C2f2Cc8c46Da49F2966095ac23;
+        address dest = address(token);
         uint value = 0;
         //"transfer(address,uint256)" "0x8cAb42EF3c96Ca59f5C52E687197d9e54161831A" $(cast to-wei 1)
         string
@@ -45,5 +56,29 @@ contract sigVerifyTest is Test {
         bytes memory signature = vm.parseBytes(sigAsString);
         bool ret = verifier.verifyCall(call, signature);
         assertEq(ret, true);
+    }
+
+    // signature generated via the test-oriented front-end: https://github.com/SpaceStation09/passkey-sign
+    function testExecuteCall() public {
+        token.transfer(address(wallet), 10 ether);
+        assertEq(token.balanceOf(address(wallet)), 10 ether);
+        address dest = address(token);
+        uint value = 0;
+        address recipient = 0x8cAb42EF3c96Ca59f5C52E687197d9e54161831A;
+        //"transfer(address,uint256)" "0x8cAb42EF3c96Ca59f5C52E687197d9e54161831A" $(cast to-wei 1)
+        string
+            memory opCalldataAsStr = "0xa9059cbb0000000000000000000000008cab42ef3c96ca59f5c52e687197d9e54161831a0000000000000000000000000000000000000000000000000de0b6b3a7640000";
+        bytes memory opCalldata = vm.parseBytes(opCalldataAsStr);
+        Call memory call = Call(dest, value, opCalldata);
+        string
+            memory sigAsString = "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000c00000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000001700000000000000000000000000000000000000000000000000000000000000016107671cdbe494edf59620792b086e85e9a7ab42bc475a5aeaf9d9c84425e9a683a730bea2a1f8914a5507683210e99650c369256e527c776d5deaad8d4a5533000000000000000000000000000000000000000000000000000000000000002549960de5880e8c687434170f6476605b8fe4aeb9a28632c7995cf3ba831d97631d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000fb7b2274797065223a22776562617574686e2e676574222c226368616c6c656e6765223a22666c63443361726c6c634c797a497847326b6e796c6d435672434d4141414141414141414141414141414141414141414141414141414141414141414141414141414141414b6b466e4c73414141414141414141414141414141434d71304c76504a624b576658464c6d68786c396e6c5157474447674141414141414141414141414141414141414141414141414141414141414141336774724f6e5a414141222c226f726967696e223a22687474703a2f2f6c6f63616c686f73743a33303030222c2263726f73734f726967696e223a66616c73657d0000000000";
+        bytes memory signature = vm.parseBytes(sigAsString);
+        wallet.addTestPasskey(pubkey);
+        wallet.executeCall(call, signature);
+        assertEq(token.balanceOf(recipient), 1 ether);
+
+        call.value = 1;
+        vm.expectRevert("invalid signature");
+        wallet.executeCall(call, signature);
     }
 }
