@@ -12,3 +12,5 @@ out/
 node_modules
 broadcast
 test signature.txt
+
+.DS_Store
