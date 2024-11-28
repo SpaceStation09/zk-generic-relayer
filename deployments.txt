@@ -18,9 +18,9 @@ Wallet deployed at: 0x7d695ED50F06C73197338A26d978249722c36603
 
 wallet sepolia:
 Init Owner: 0x94871d770973D93d6c8912E3D1950F3DAD9B4E30
-ECDSAOwnedDKIMRegistry implementation deployed at: 0x572D8a9D256279463e0914498ea09F6Bbf41a239
-ECDSAOwnedDKIMRegistry (proxy) deployed at: 0xd97DD4F3aF798e452577B3437b04C8c8b47033C0
-verifier implementation contract deployed at: 0x8FBE55536bcb25097CDE9fE39F23Bc74922d36A7
-Verifier (proxy) deployed at: 0x20D665700a5D67C3E10535aC07677d557E0AB1D1
-EmailAuth implementation deployed at: 0x154Ed77BEDB54798fc669a533f14a14f8613115F
-Wallet deployed at: 0x073791C252670D0D2b6Dbf7408208825423bb64A
+ECDSAOwnedDKIMRegistry implementation deployed at: 0x6f2B36c1e73786f347aE2eC78371670feEd3A1BD
+ECDSAOwnedDKIMRegistry (proxy) deployed at: 0x49e22f164E3729783922E2332E8cc269e2dd9661
+verifier implementation contract deployed at: 0x9c1C8FaB7a873d19e58F310fD3Cd3cc22c9D20CC
+Verifier (proxy) deployed at: 0x8653462B56e50b06B3d522c744a46134F1aE128b
+EmailAuth implementation deployed at: 0x657294E54f4e17990799eCE31419629222cc7714
+Wallet deployed at: 0x1A65368821052ec0a5EaD4331DF885969bB38391

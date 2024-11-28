@@ -23,7 +23,7 @@ contract Wallet {
     ) {
         verifierAddr = _verifierAddr;
         dkimAddr = _dkimAddr;
-        _emailAuthImpAddr = _emailAuthImpAddr;
+        emailAuthImplAddr = _emailAuthImpAddr;
     }
 
     /// @notice Returns the address of the verifier contract.
